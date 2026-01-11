@@ -1,0 +1,110 @@
+.widgets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+
+  .widget {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-1);
+    min-height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #0b1220;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    min-height: 140px;
+
+    .metricTop {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .metricTitle {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .metricValue {
+      font-size: 20px;
+      font-weight: 800;
+      color: #071033;
+    }
+
+    .metricBottom {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: space-between;
+    }
+    .metricHint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .sparkline {
+      flex: 0 0 auto;
+    }
+
+    .widgetHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .title {
+      font-weight: 700;
+    }
+    .smallBtn {
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      cursor: pointer;
+    }
+
+    .activityList {
+      list-style: none;
+      margin: 8px 0 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .activityItem {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      border-radius: 8px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.6),
+        rgba(255, 255, 255, 0.4)
+      );
+    }
+    .activityLeft {
+      display: flex;
+      flex-direction: column;
+    }
+    .activityUser {
+      font-weight: 700;
+    }
+    .activityAction {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .activityTime {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .empty {
+      color: var(--muted);
+    }
+  }
+}

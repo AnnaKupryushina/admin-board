@@ -1,0 +1,27 @@
+.form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.input {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+.submit {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  border: none;
+}
+.cancel {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+.label {
+  font-size: 13px;
+  color: var(--muted);
+}

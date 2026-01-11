@@ -1,0 +1,84 @@
+.panel {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow-1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 18px; /* spacing above requests panel */
+}
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.item {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 12px;
+  align-items: start;
+  background: var(--card-2);
+  border-radius: 8px;
+}
+.meta {
+  font-size: 13px;
+  color: var(--muted);
+}
+.assign {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+.select {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+.btn {
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btnPrimary {
+  background: var(--accent);
+  color: white;
+  border: none;
+}
+.statusOpen {
+  color: #0ea5e9;
+}
+.statusIn {
+  color: #f59e0b;
+}
+.statusDone {
+  color: var(--success);
+}
+
+.item > div:first-child {
+  min-width: 0;
+}
+.meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.assign > * {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 720px) {
+  .item {
+    grid-template-columns: 1fr;
+  }
+  .assign {
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+}
