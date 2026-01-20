@@ -44,7 +44,9 @@
 .btn {
   padding: 8px 10px;
   border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
   cursor: pointer;
+  background: white;
 }
 .btnPrimary {
   background: var(--accent);
@@ -71,6 +73,23 @@
 }
 .assign > * {
   flex: 0 0 auto;
+}
+
+.pagination {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+}
+.pages {
+  display: flex;
+  gap: 6px;
+}
+.active {
+  background: var(--accent);
+  color: white;
+  border: none;
 }
 
 @media (max-width: 720px) {

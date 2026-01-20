@@ -8,6 +8,8 @@ export default function ClientsPanel() {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState<Client | null>(null);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 7;
 
   const load = async () => {
     setLoading(true);
@@ -23,6 +25,11 @@ export default function ClientsPanel() {
     load();
   }, []);
 
+  // compute pagination
+  const totalPages = Math.max(1, Math.ceil(clients.length / PAGE_SIZE));
+  const start = (page - 1) * PAGE_SIZE;
+  const paged = clients.slice(start, start + PAGE_SIZE);
+
   const onCreate = async (payload: Omit<Client, "id" | "createdAt">) => {
     const temp: Client = {
       ...payload,
@@ -30,6 +37,7 @@ export default function ClientsPanel() {
       createdAt: Date.now(),
     };
     setClients((s) => [temp, ...s]);
+    setPage(1); // show new item on first page
     try {
       const created = await clientsService.createClient(payload);
       setClients((s) => s.map((c) => (c.id === temp.id ? created : c)));
@@ -55,6 +63,9 @@ export default function ClientsPanel() {
     setClients((s) => s.filter((c) => c.id !== id));
     try {
       await clientsService.removeClient(id);
+      // adjust page if needed
+      const newTotal = Math.max(1, Math.ceil((prev.length - 1) / PAGE_SIZE));
+      setPage((p) => Math.min(p, newTotal));
     } catch (e) {
       setClients(prev);
       throw e;
@@ -76,7 +87,7 @@ export default function ClientsPanel() {
             {loading ? "Loading..." : "No clients yet"}
           </div>
         )}
-        {clients.map((c) => (
+        {paged.map((c) => (
           <div className={styles.item} key={c.id}>
             <div className={styles.itemLeft}>
               <div className={styles.itemName}>{c.name}</div>
@@ -97,6 +108,35 @@ export default function ClientsPanel() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* pagination controls */}
+      <div className={styles.pagination}>
+        <button
+          className={styles.btn}
+          onClick={() => setPage((p) => Math.max(1, p - 1))}
+          disabled={page === 1}
+        >
+          Prev
+        </button>
+        <div className={styles.pages}>
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              key={i}
+              className={`${styles.btn} ${page === i + 1 ? styles.active : ""}`}
+              onClick={() => setPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+        <button
+          className={styles.btn}
+          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+          disabled={page === totalPages}
+        >
+          Next
+        </button>
       </div>
 
       {editing && (

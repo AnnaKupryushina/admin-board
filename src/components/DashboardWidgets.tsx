@@ -53,6 +53,8 @@ export default function DashboardWidgets() {
   const [revenue, setRevenue] = useState<RevenuePoint[]>([]);
   const [activity, setActivity] = useState<ActivityItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 3;
 
   const loadAll = async () => {
     setLoading(true);
@@ -74,10 +76,19 @@ export default function DashboardWidgets() {
     loadAll();
     const unsub = subscribeActivity((items) => {
       // prepend new items
-      setActivity((prev) => [...items, ...prev].slice(0, 8));
+      setActivity((prev) => [...items, ...prev]);
     });
     return () => unsub();
   }, []);
+
+  const totalPages = Math.max(1, Math.ceil(activity.length / PAGE_SIZE));
+  // keep page in range when activity changes
+  useEffect(() => {
+    setPage((p) => Math.min(p, totalPages));
+  }, [totalPages]);
+
+  const goPrev = () => setPage((p) => (p > 1 ? p - 1 : 1));
+  const goNext = () => setPage((p) => (p < totalPages ? p + 1 : totalPages));
 
   const revenueValues = useMemo(() => revenue.map((p) => p.value), [revenue]);
 
@@ -135,18 +146,41 @@ export default function DashboardWidgets() {
           {activity.length === 0 && (
             <li className={styles.empty}>No activity yet</li>
           )}
-          {activity.map((a) => (
-            <li key={a.id} className={styles.activityItem}>
-              <div className={styles.activityLeft}>
-                <div className={styles.activityUser}>{a.user}</div>
-                <div className={styles.activityAction}>{a.action}</div>
-              </div>
-              <div className={styles.activityTime}>
-                {new Date(a.when).toLocaleTimeString()}
-              </div>
-            </li>
-          ))}
+          {activity
+            .slice((page - 1) * PAGE_SIZE, (page - 1) * PAGE_SIZE + PAGE_SIZE)
+            .map((a) => (
+              <li key={a.id} className={styles.activityItem}>
+                <div className={styles.activityLeft}>
+                  <div className={styles.activityUser}>{a.user}</div>
+                  <div className={styles.activityAction}>{a.action}</div>
+                </div>
+                <div className={styles.activityTime}>
+                  {new Date(a.when).toLocaleTimeString()}
+                </div>
+              </li>
+            ))}
         </ul>
+        <div className={styles.pagination}>
+          <button
+            className={styles.smallBtn}
+            onClick={goPrev}
+            disabled={page === 1}
+          >
+            Prev
+          </button>
+          <div className={styles.pageInfo}>
+            <span>
+              Page {page} of {totalPages}
+            </span>
+          </div>
+          <button
+            className={styles.smallBtn}
+            onClick={goNext}
+            disabled={page === totalPages}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </section>
   );

@@ -69,3 +69,20 @@
 .empty {
   color: var(--muted);
 }
+
+.pagination {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+}
+.pages {
+  display: flex;
+  gap: 6px;
+}
+.active {
+  background: var(--accent);
+  color: white;
+  border: none;
+}

@@ -9,6 +9,8 @@ const ASSIGNEES = ["Alice", "Bob", "Clara", "Devon"];
 export default function RequestsPanel() {
   const [items, setItems] = useState<RequestItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 7;
 
   const load = async () => {
     setLoading(true);
@@ -22,6 +24,12 @@ export default function RequestsPanel() {
   useEffect(() => {
     load();
   }, []);
+
+  const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
+  const paged = items.slice(
+    (page - 1) * PAGE_SIZE,
+    (page - 1) * PAGE_SIZE + PAGE_SIZE
+  );
 
   const onAssign = async (id: string, assignee: string | null) => {
     setItems((s) =>
@@ -83,7 +91,7 @@ export default function RequestsPanel() {
             {loading ? "Loading..." : "No requests"}
           </div>
         )}
-        {items.map((it) => (
+        {paged.map((it) => (
           <div className={styles.item} key={it.id}>
             <div>
               <div>
@@ -129,6 +137,33 @@ export default function RequestsPanel() {
             </div>
           </div>
         ))}
+      </div>
+      <div className={styles.pagination}>
+        <button
+          className={styles.btn}
+          onClick={() => setPage((p) => Math.max(1, p - 1))}
+          disabled={page === 1}
+        >
+          Prev
+        </button>
+        <div className={styles.pages}>
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              key={i}
+              className={`${styles.btn} ${page === i + 1 ? styles.active : ""}`}
+              onClick={() => setPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+        <button
+          className={styles.btn}
+          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+          disabled={page === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
